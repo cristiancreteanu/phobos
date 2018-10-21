@@ -435,6 +435,17 @@ if (isFloatingPoint!T)
         }
         return this;
     }
+
+    Complex opBinary(string op)(Complex rhs) {
+        if (op == "+" || op == "-") {
+            mixin ("return Complex(re " ~ op ~ " rhs.re, im " ~ op ~ "rhs.im);");
+        }
+
+        // (a + bi)(c + di)
+        if (op == "*") {
+            return Complex(re * rhs.re - im * rhs.im, im * rhs.re + re + rhs.im);
+        }
+    }
 }
 
 @safe pure nothrow unittest
